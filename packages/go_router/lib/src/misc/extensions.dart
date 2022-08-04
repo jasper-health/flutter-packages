@@ -15,12 +15,10 @@ extension GoRouterHelper on BuildContext {
     Map<String, String> params = const <String, String>{},
     Map<String, dynamic> queryParams = const <String, dynamic>{},
   }) =>
-      GoRouter.of(this)
-          .namedLocation(name, params: params, queryParams: queryParams);
+      GoRouter.of(this).namedLocation(name, params: params, queryParams: queryParams);
 
   /// Navigate to a location.
-  void go(String location, {Object? extra}) =>
-      GoRouter.of(this).go(location, extra: extra);
+  void go(String location, {Object? extra}) => GoRouter.of(this).go(location, extra: extra);
 
   /// Navigate to a named route.
   void goNamed(
@@ -37,8 +35,7 @@ extension GoRouterHelper on BuildContext {
       );
 
   /// Push a location onto the page stack.
-  void push(String location, {Object? extra}) =>
-      GoRouter.of(this).push(location, extra: extra);
+  void push(String location, {Object? extra}) => GoRouter.of(this).push(location, extra: extra);
 
   /// Navigate to a named route onto the page stack.
   void pushNamed(
@@ -67,8 +64,7 @@ extension GoRouterHelper on BuildContext {
   /// See also:
   /// * [go] which navigates to the location.
   /// * [push] which pushes the location onto the page stack.
-  void replace(String location, {Object? extra}) =>
-      GoRouter.of(this).replace(location, extra: extra);
+  void replace(String location, {Object? extra}) => GoRouter.of(this).replace(location, extra: extra);
 
   /// Replaces the top-most page of the page stack with the named route w/
   /// optional parameters, e.g. `name='person', params={'fid': 'f2', 'pid':
@@ -89,4 +85,15 @@ extension GoRouterHelper on BuildContext {
         queryParams: queryParams,
         extra: extra,
       );
+
+  /// Custom implementation to wait till page finished. Added for backward compatibility
+  /// DEPRECATED function
+  Future<dynamic> awaitForResult({String? route}) async {
+    return GoRouter.of(this).routerDelegate.awaitForResult(route: route);
+  }
+
+  /// Custom implementation to pop rotes till find provided path in stack
+  void popUntil({required String? fullUriString}) {
+    return GoRouter.of(this).routerDelegate.popUntil(fullUriString: fullUriString);
+  }
 }
