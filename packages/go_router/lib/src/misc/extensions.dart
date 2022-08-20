@@ -87,7 +87,6 @@ extension GoRouterHelper on BuildContext {
       );
 
   /// Custom implementation to wait till page finished. Added for backward compatibility
-  /// DEPRECATED function
   Future<dynamic> awaitForResult({String? route}) async {
     return GoRouter.of(this).routerDelegate.awaitForResult(route: route);
   }
