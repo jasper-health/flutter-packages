@@ -85,7 +85,7 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
   String _getPagesRoute(RouteMatchList matchList) {
     //Taking all stack element Uris to have unique path which target to current page
     return matchList.matches
-        .fold<String>('', (String previousValue, RouteMatch element) => previousValue + element.fullUriString);
+        .fold<String>('', (String previousValue, RouteMatch element) => previousValue + element.route.toString());
   }
 
   /// Provide option to await for page close
@@ -122,10 +122,10 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
 
   /// Pop top routes from until meet provided path pattern
   void popUntil({required String? fullUriString}) {
-    while ((fullUriString != _matches.last.fullUriString) && _matches.canPop()) {
+    while ((fullUriString != matches.generateFullPath()) && matches.matches.length>1) {
       //Setting result to last pagesRoute and then pop last route out from stack
       setPageResult(route: pagesRoute);
-      _matches.pop();
+      matches.pop();
     }
     notifyListeners();
   }
@@ -189,6 +189,7 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
     if (!route.didPop(result)) {
       return false;
     }
+    setPageResult(route: pagesRoute);
     _matchList.pop();
     notifyListeners();
     assert(() {
@@ -236,7 +237,7 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
   /// For use by the Router architecture as part of the RouterDelegate.
   @override
   Future<void> setNewRoutePath(RouteMatchList configuration) {
-    _matches.location.pathSegments.fold<String>('', (String previousValue, String element) {
+    matches.uri.pathSegments.fold<String>('', (String previousValue, String element) {
       final String result = previousValue + element;
       setPageResult(route: result);
       return result;

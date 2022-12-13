@@ -78,6 +78,11 @@ class RouteMatchList {
   /// /family/:fid/person/:pid
   final String fullpath;
 
+  /// Hotfix for [fullpath] as it is not working
+  String generateFullPath(){
+    return _generateFullPath(_matches);
+  }
+
   /// Parameters for the matched route, URI-encoded.
   final Map<String, String> pathParameters;
 
