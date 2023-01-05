@@ -120,16 +120,6 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
     });
   }
 
-  /// Pop top routes from until meet provided path pattern
-  void popUntil({required String? fullUriString}) {
-    while ((fullUriString != matches.generateFullPath()) && matches.matches.length>1) {
-      //Setting result to last pagesRoute and then pop last route out from stack
-      setPageResult(route: pagesRoute);
-      matches.pop();
-    }
-    notifyListeners();
-  }
-
   /// Pushes the given location onto the page stack
   void push(RouteMatchList matches) {
     assert(matches.last.route is! ShellRoute);

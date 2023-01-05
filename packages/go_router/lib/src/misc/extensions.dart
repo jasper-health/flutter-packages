@@ -90,9 +90,4 @@ extension GoRouterHelper on BuildContext {
   Future<dynamic> awaitForResult({String? route}) async {
     return GoRouter.of(this).routerDelegate.awaitForResult(route: route);
   }
-
-  /// Custom implementation to pop rotes till find provided path in stack
-  void popUntil({required String? fullUriString}) {
-    return GoRouter.of(this).routerDelegate.popUntil(fullUriString: fullUriString);
-  }
 }
