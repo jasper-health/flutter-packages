@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
 import '../router.dart';
@@ -86,8 +88,23 @@ extension GoRouterHelper on BuildContext {
         extra: extra,
       );
 
+  /// Provide await result function
+  /// Extra wrapper to handle case when GoRouter stack updated async after some delay because of redirection function
   /// Custom implementation to wait till page finished. Added for backward compatibility
-  Future<dynamic> awaitForResult({String? route}) async {
-    return GoRouter.of(this).routerDelegate.awaitForResult(route: route);
+  Future<dynamic> awaitForResult({
+    required void Function() navigationFunction,
+    void Function()? postNavigateCallback,
+    String? routePath,
+  }) async {
+    final GoRouter router = GoRouter.of(this);
+    final Completer<dynamic> completer = Completer<dynamic>();
+    void updateListener()  {
+      router.removeListener(updateListener);
+      completer.complete(router.routerDelegate.awaitForResult(route: routePath));
+      postNavigateCallback?.call();
+    }
+    router.addListener(updateListener);
+    navigationFunction();
+    return completer.future;
   }
 }

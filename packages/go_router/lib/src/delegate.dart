@@ -85,7 +85,7 @@ class GoRouterDelegate extends RouterDelegate<RouteMatchList>
   String _getPagesRoute(RouteMatchList matchList) {
     //Taking all stack element Uris to have unique path which target to current page
     return matchList.matches
-        .fold<String>('', (String previousValue, RouteMatch element) => previousValue + element.route.toString());
+        .fold<String>('', (String previousValue, RouteMatch element) => previousValue + element.subloc);
   }
 
   /// Provide option to await for page close
